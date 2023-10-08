@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+  profiles:
+    include: secret
+
+logging.level:
+  org.hibernate.SQL: debug
