@@ -1,6 +1,7 @@
 package study.datajpa.repository;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -79,5 +80,45 @@ class MemberRepositoryTest {
         assertThat(result.get(0).getUsername()).isEqualTo("aaa");
         assertThat(result.get(0).getAge()).isEqualTo(20);
         assertThat(result.size()).isEqualTo(1);
+    }
+
+    @Test
+    void findUsername(){
+        Member member = new Member("ronaldo", 7);
+
+        memberRepository.save(member);
+
+        List<Member> result = memberRepository.findByUsername("ronaldo");
+
+        assertThat(result.get(0).getUsername()).isEqualTo("ronaldo");
+        assertThat(result.get(0).getAge()).isEqualTo(7);
+        assertThat(result.size()).isEqualTo(1);
+    }
+
+    @Test
+    void testQuery(){
+        Member m1 = new Member("aaa", 10);
+        Member m2 = new Member("aaa", 20);
+
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        List<Member> result = memberRepository.findUser("aaa", 10);
+        assertThat(result.get(0)).isEqualTo(m1);
+    }
+
+    @Test
+    public void testQuery2() throws Exception {
+        //given
+        Member m1 = new Member("aaa", 10);
+        Member m2 = new Member("bbb", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+        //when
+        List<String> usernameList = memberRepository.findUsernameList();
+        for (String s : usernameList) {
+            System.out.println("s = " + s);
+        }
+        //then
     }
 }
