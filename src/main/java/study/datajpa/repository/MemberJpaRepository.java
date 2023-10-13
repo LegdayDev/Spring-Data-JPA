@@ -39,4 +39,11 @@ public class MemberJpaRepository {
     public void delete(Member member){
         em.remove(member);
     }
+
+    public List<Member> findByUsernameAndAgeGreaterThen(String username, int age){
+        return em.createQuery("SELECT m FROM Member m WHERE m.username = :username AND m.age > :age")
+                .setParameter("username",username)
+                .setParameter("age",age)
+                .getResultList();
+    }
 }
