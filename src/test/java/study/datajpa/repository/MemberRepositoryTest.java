@@ -156,7 +156,21 @@ class MemberRepositoryTest {
         for (Member member : result) {
             System.out.println("member = " + member);
         }
-        //then
+    }
+
+
+    @Test
+    public void returnType() throws Exception {
+        Member m1 = new Member("aaa", 10);
+        Member m2 = new Member("bbb", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        List<Member> result = memberRepository.findListByUsername("aaa");
+        Member result2 = memberRepository.findMemberByUsername("aaa");
+        Optional<Member> result3 = memberRepository.findOptionalByUsername("aaa");
+
+
     }
 
 
