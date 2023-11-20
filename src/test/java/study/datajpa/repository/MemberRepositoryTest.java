@@ -275,6 +275,18 @@ class MemberRepositoryTest {
         //then
     }
 
+    @Test
+    public void lock() throws Exception {
+        //given
+        Member member1 = memberRepository.save(new Member("member1", 10));
+        em.flush();
+        em.clear();
+        //when
+        List<Member> result = memberRepository.findLockByUsername("member1");
+
+        //then
+    }
+
 
 
 
