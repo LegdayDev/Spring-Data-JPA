@@ -228,6 +228,38 @@ class MemberRepositoryTest {
         assertThat(member.getAge()).isEqualTo(41);
     }
 
+    @Test
+    public void findMemberLazy() throws Exception {
+        //given
+        // member1 -> teamA
+        // member2 -> teamB
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+        Member member1 = new Member("member1",10,teamA);
+        Member member2 = new Member("member2",20,teamB);
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        em.flush();
+        em.clear();
+
+        //when
+
+        /**
+         * <li>Lazy 로딩으로 인한 N+1 문제는 패치조인으로 해결가능하다!</li>
+         * <li>단, 스프링 데이터 JPA를 쓰면 매번 메서드를 생성해야하는 불편함이 잇다.</li>
+         */
+        //List<Member> members = memberRepository.findMemberFetchJoin();
+        //List<Member> members = memberRepository.findAll();
+        List<Member> members = memberRepository.findMemberEntityGraph();
+        for (Member member : members) {
+            System.out.println("member = " + member.getTeam());
+        }
+        //then
+    }
+
 
 
 
