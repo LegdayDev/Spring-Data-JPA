@@ -3,14 +3,12 @@ package study.datajpa.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 
+import javax.persistence.QueryHint;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,8 +51,11 @@ public interface MemberRepository extends JpaRepository<Member,Long> {
     @EntityGraph(attributePaths = {"team"}) //JPQL을 직접 안짜도 된다 !
     List<Member> findAll();
 
-    // JPQL을 길게 짜기 귀찮으면 엔티티 1개만 찾는 쿼리를 짜고 @EntityGraph만 붙혀줘도 된다.
+    // JPQL 을 길게 짜기 귀찮으면 엔티티 1개만 찾는 쿼리를 짜고 @EntityGraph 만 붙혀줘도 된다.
     @EntityGraph(attributePaths = {"team"})
     @Query("SELECT m FROM Member m")
     List<Member> findMemberEntityGraph();
+
+    @QueryHints(value = @QueryHint(name = "org.hibernate.readOnly", value = "true"))
+    Member findReadOnlyByUsername(String username);
 }

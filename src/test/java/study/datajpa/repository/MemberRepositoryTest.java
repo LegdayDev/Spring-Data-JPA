@@ -260,6 +260,21 @@ class MemberRepositoryTest {
         //then
     }
 
+    @Test
+    public void queryHint() throws Exception {
+        //given
+        Member member1 = memberRepository.save(new Member("member1", 10));
+        em.flush();
+        em.clear();
+
+        //when
+        Member findMember = memberRepository.findReadOnlyByUsername("member1");// 스냅샷을 안하기때문에 변경감지도 일어나지 않게된다.
+        findMember.setUsername("member2");
+
+        em.flush();
+        //then
+    }
+
 
 
 
